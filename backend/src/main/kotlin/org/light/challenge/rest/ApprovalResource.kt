@@ -21,11 +21,11 @@ class ApprovalResource(private val approvalService: ApprovalService) {
     @POST
     @Path("/{id}/decide")
     fun decide(
-        @PathParam("id") id: String,
+        @PathParam("id") paymentId: String,
         decision: ApprovalDecisionRequest
     ): Response {
         return try {
-            val result = approvalService.processDecision(id, decision)
+            val result = approvalService.processDecision(paymentId, decision)
             Response.ok(result).build()
         } catch (e: IllegalArgumentException) {
             Response.status(404).entity(mapOf("error" to e.message)).build()

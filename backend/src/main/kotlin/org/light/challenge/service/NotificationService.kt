@@ -12,13 +12,13 @@ class NotificationService {
             "Payment approval needed - $paymentDescription ($amount)" }
     }
 
-    fun notifyPaymentApproved(submittedBy: String, paymentDescription: String) {
-        logger.info { "Sending notification to $submittedBy: " +
+    fun notifyPaymentApproved(submitterEmail: String, paymentDescription: String) {
+        logger.info { "Sending notification to $submitterEmail: " +
             "Your payment has been approved - $paymentDescription" }
     }
 
-    fun notifyPaymentRejected(submittedBy: String, paymentDescription: String, reason: String?) {
-        logger.info { "Sending notification to $submittedBy: " +
+    fun notifyPaymentRejected(submitterEmail: String, paymentDescription: String, reason: String?) {
+        logger.info { "Sending notification to $submitterEmail: " +
             "Your payment has been rejected - $paymentDescription. Reason: ${reason ?: "No reason provided"}" }
     }
 }

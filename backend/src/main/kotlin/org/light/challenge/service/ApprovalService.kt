@@ -61,10 +61,10 @@ class ApprovalService(
                 )
                 approvalRequestRepository.save(approvalRequest)
                 notificationService.notifyApprover(
-                    rule.approverEmail,
-                    rule.approverName,
-                    payment.description,
-                    "${payment.currency} ${payment.amount}"
+                    approverEmail = rule.approverEmail,
+                    approverName = rule.approverName,
+                    paymentDescription = payment.description,
+                    amount = "${payment.currency} ${payment.amount}"
                 )
             }
             logger.info { "Payment ${payment.id} requires ${matchingRules.size} approval(s)" }
@@ -83,9 +83,9 @@ class ApprovalService(
         }
     }
 
-    fun processDecision(requestId: String, decision: ApprovalDecisionRequest): ApprovalRequest {
-        val approvalRequest = approvalRequestRepository.findById(requestId)
-            ?: throw IllegalArgumentException("Approval request not found: $requestId")
+    fun processDecision(paymentId: String, decision: ApprovalDecisionRequest): ApprovalRequest {
+        val approvalRequest = approvalRequestRepository.findById(paymentId)
+            ?: throw IllegalArgumentException("Approval request not found: $paymentId")
 
         if (approvalRequest.status != ApprovalStatus.PENDING) {
             throw IllegalStateException("Approval request has already been decided")
@@ -105,9 +105,9 @@ class ApprovalService(
             payment.status = PaymentStatus.REJECTED
             paymentRepository.save(payment)
             notificationService.notifyPaymentRejected(
-                payment.submittedBy,
-                payment.description,
-                decision.comment
+                submitterEmail = payment.submittedBy,
+                paymentDescription = payment.description,
+                reason = decision.comment
             )
             logger.info { "Payment ${payment.id} rejected by ${approvalRequest.approverName}" }
         }
@@ -116,8 +116,8 @@ class ApprovalService(
             payment.status = PaymentStatus.APPROVED
             paymentRepository.save(payment)
             notificationService.notifyPaymentApproved(
-                payment.submittedBy,
-                payment.description
+                submitterEmail = payment.submittedBy,
+                paymentDescription = payment.description
             )
             logger.info { "Payment ${payment.id} fully approved" }
         }
