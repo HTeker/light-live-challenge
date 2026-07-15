@@ -73,19 +73,15 @@ class ApprovalService(
         return payment
     }
 
-    fun findMatchingRules(payment: Payment): List<ApprovalRule> {
-        val candidateRules = approvalRuleRepository.findByDepartment(payment.department)
+    fun findMatchingRules(payment: Payment): List<ApprovalRule> =
+        approvalRuleRepository.findAll()
+            .filter { it.department == null || it.department == payment.department }
+            .filter { it.minAmount <= payment.amount }
+            .filter { it.maxAmount == null || it.maxAmount > payment.amount }
 
-        return candidateRules.filter { rule ->
-            val meetsMinimum = payment.amount >= rule.minAmount
-            val meetsMaximum = rule.maxAmount == null || payment.amount < rule.maxAmount
-            meetsMinimum && meetsMaximum
-        }
-    }
-
-    fun processDecision(paymentId: String, decision: ApprovalDecisionRequest): ApprovalRequest {
-        val approvalRequest = approvalRequestRepository.findById(paymentId)
-            ?: throw IllegalArgumentException("Approval request not found: $paymentId")
+    fun processDecision(approvalRequestId: String, decision: ApprovalDecisionRequest): ApprovalRequest {
+        val approvalRequest = approvalRequestRepository.findById(approvalRequestId)
+            ?: throw IllegalArgumentException("Approval request not found: $approvalRequestId")
 
         if (approvalRequest.status != ApprovalStatus.PENDING) {
             throw IllegalStateException("Approval request has already been decided")
@@ -130,9 +126,6 @@ class ApprovalService(
     fun getPaymentsByStatus(status: PaymentStatus): List<Payment> = paymentRepository.findByStatus(status)
 
     fun getPayment(id: String): Payment? = paymentRepository.findById(id)
-
-    fun getPendingApprovals(): List<ApprovalRequest> =
-        approvalRequestRepository.findByStatus(ApprovalStatus.PENDING)
 
     fun getPendingApprovalDetails(): List<PendingApprovalView> =
         approvalRequestRepository.findByStatus(ApprovalStatus.PENDING).mapNotNull { request ->

@@ -91,8 +91,6 @@ class ApprovalRequestRepository {
         seed.forEach { requests[it.id] = it }
     }
 
-    fun findAll(): List<ApprovalRequest> = requests.values.toList()
-
     fun findById(id: String): ApprovalRequest? = requests[id]
 
     fun findByPaymentId(paymentId: String): List<ApprovalRequest> =

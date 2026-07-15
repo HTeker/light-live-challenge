@@ -61,7 +61,4 @@ class ApprovalRuleRepository {
     }
 
     fun findAll(): List<ApprovalRule> = rules.toList()
-
-    fun findByDepartment(department: Department): List<ApprovalRule> =
-        rules.filter { it.department == null || it.department == department }
 }
