@@ -132,11 +132,11 @@ All data is stored in-memory and resets on backend restart.
 You're receiving this codebase ahead of a 60-minute live coding session. Here's what to expect:
 
 **Before the session:**
-- Clone the repo and get all three components running (Ollama, backend, frontend)
-- Familiarise yourself with the codebase, how it's structured and how the pieces fit together
-- Feel free to use AI to explore the codebase, but make sure you personally understand how the application works. During the interview, we'll expect you to navigate, reason about, and extend the code yourself
-- Try submitting a payment and using the AI categorisation feature
-- Make sure your preferred AI coding tools are set up and ready (Claude Code, Copilot, Cursor, etc.)
+- Get the application running on your machine by following the steps in [How to run](#how-to-run)
+- Load the frontend at http://localhost:3000, submit a payment, and try the AI categorisation feature
+- Get to know the application and the codebase, how it's structured and how the pieces fit together
+- Make sure that you understand it yourself. Feel free to use AI to explore, but during the session we'll expect you to navigate, reason about, and discuss solutions yourself
+- Have your preferred AI coding tools set up and ready (Claude Code, Copilot, Cursor, etc.)
 
 **During the session:**
 - We'll give you a feature to build that extends the existing application
